@@ -4,18 +4,17 @@ import { HiChevronRight } from "react-icons/hi2";
 import { HiChevronLeft } from "react-icons/hi2";
 import BlogPostCard from "./BlogPostCard";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import useBlogStore from "../../store/useBlogStore";
 
 function AllPostsPage() {
-  const [blogs, setBlogs] = useState();
+  const { blogs, fetchBlogs } = useBlogStore(); // Use the store
 
   useEffect(() => {
-    fetch("/Blog.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setBlogs(data);
-      });
-  }, []);
+    if (blogs.length === 0) {
+      fetchBlogs();
+    }
+  }, [blogs.length, fetchBlogs]);
 
   return (
     <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">

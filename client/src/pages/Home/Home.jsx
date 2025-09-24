@@ -1,17 +1,14 @@
 import { Link } from "react-router-dom";
 import BlogCard from "./BlogCard";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import useBlogStore from "../../store/useBlogStore";
 
 function Home() {
-  const [blogs, setBlogs] = useState([]);
+  const { blogs, fetchBlogs } = useBlogStore(); // Use the store
 
   useEffect(() => {
-    fetch("/Blog.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setBlogs(data);
-      });
-  }, []);
+    fetchBlogs(); // Fetch blogs when the component mounts
+  }, [fetchBlogs]);
 
   return (
     <main className="flex-grow">
