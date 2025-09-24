@@ -6,10 +6,11 @@ function Home() {
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    fetch("/Blog.json").then((data) => {
-      setBlogs(data);
-      console.log(data);
-    });
+    fetch("/Blog.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setBlogs(data);
+      });
   }, []);
 
   return (
@@ -122,9 +123,7 @@ function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs &&
-              blogs.map((blog) => {
-                <BlogCard blog={blog} />;
-              })}
+              blogs.map((blog) => <BlogCard blog={blog} key={blog.id} />)}
           </div>
         </div>
       </section>

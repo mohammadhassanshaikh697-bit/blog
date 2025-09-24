@@ -14,9 +14,9 @@ function AllPostsPage() {
       .then((res) => res.json())
       .then((data) => {
         setBlogs(data);
-        console.log(blogs);
       });
   }, []);
+
   return (
     <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
       <div className="max-w-4xl mx-auto">
@@ -70,9 +70,7 @@ function AllPostsPage() {
         </div>
         <div className="space-y-12">
           {blogs &&
-            blogs.map((blog) => {
-              <BlogPostCard blog={blog} />;
-            })}
+            blogs.map((blog) => <BlogPostCard blog={blog} key={blog.id} />)}
         </div>
         <div className="mt-12 flex justify-center">
           <nav aria-label="Pagination" className="flex items-center space-x-2">

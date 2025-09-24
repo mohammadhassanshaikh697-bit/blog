@@ -2,12 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function BlogCard({ blog }) {
-  const { title, content, Date, id } = blog;
+  const { title, description } = blog;
   return (
-    <div
-      key={id}
-      className="bg-amber-50 p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col"
-    >
+    <div className="bg-amber-50 p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col">
       <span className="text-sm text-gray-500">
         {Date ? Date : "May 20, 2024"}
       </span>
@@ -15,8 +12,8 @@ function BlogCard({ blog }) {
         {title ? title : "AI in Software Development"}
       </h3>
       <p className="mt-2 text-gray-600 flex-grow">
-        {content
-          ? content
+        {description
+          ? description
           : "How artificial intelligence is changing the game for developers, from code generation to automated testing."}
       </p>
       <Link
