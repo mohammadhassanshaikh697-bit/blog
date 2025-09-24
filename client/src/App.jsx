@@ -18,7 +18,7 @@ function Routes() {
           element: <Home />,
         },
         {
-          path: "/post/:slug",
+          path: "/post/:id",
           element: <SinglePost />,
         },
         {

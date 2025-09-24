@@ -1,15 +1,23 @@
-import React from 'react'
+import React from "react";
+import { Link } from "react-router-dom";
 
-function BlogCard() {
+function BlogCard({ blog }) {
+  const { title, content, Date, id } = blog;
   return (
-    <div className="bg-amber-50 p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col">
-      <span className="text-sm text-gray-500">May 20, 2024</span>
+    <div
+      key={id}
+      className="bg-amber-50 p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col"
+    >
+      <span className="text-sm text-gray-500">
+        {Date ? Date : "May 20, 2024"}
+      </span>
       <h3 className="text-xl font-bold mt-2 text-gray-900">
-        AI in Software Development
+        {title ? title : "AI in Software Development"}
       </h3>
       <p className="mt-2 text-gray-600 flex-grow">
-        How artificial intelligence is changing the game for developers, from
-        code generation to automated testing.
+        {content
+          ? content
+          : "How artificial intelligence is changing the game for developers, from code generation to automated testing."}
       </p>
       <Link
         className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-blue-500 hover:underline"
@@ -36,4 +44,4 @@ function BlogCard() {
   );
 }
 
-export default BlogCard
+export default BlogCard;
