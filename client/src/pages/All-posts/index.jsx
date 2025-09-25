@@ -8,7 +8,8 @@ import { useEffect } from "react";
 import useBlogStore from "../../store/useBlogStore";
 
 function AllPostsPage() {
-  const { blogs, fetchBlogs } = useBlogStore(); // Use the store
+  const blogs = useBlogStore((s) => s.blogs);
+  const fetchBlogs = useBlogStore((s) => s.fetchBlogs);
 
   useEffect(() => {
     if (blogs.length === 0) {

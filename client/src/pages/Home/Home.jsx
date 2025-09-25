@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import useBlogStore from "../../store/useBlogStore";
 
 function Home() {
-  const { blogs, fetchBlogs } = useBlogStore();
+  const blogs = useBlogStore((s) => s.blogs);
+  const fetchBlogs = useBlogStore((s) => s.fetchBlogs);
 
   useEffect(() => {
     fetchBlogs(); // Fetch blogs when the component mounts

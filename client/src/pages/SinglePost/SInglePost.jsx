@@ -1,4 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+// shared frozen empty array used as a stable fallback for comment selectors
+const EMPTY_COMMENTS = Object.freeze([]);
 import { Link, useParams } from "react-router-dom";
 import useBlogStore from "../../store/useBlogStore";
 import ReactMarkdown from "react-markdown";
@@ -7,7 +10,19 @@ import remarkGfm from "remark-gfm";
 
 function SinglePost() {
   const { id } = useParams();
-  const { currentBlog, fetchBlogById } = useBlogStore();
+  const currentBlog = useBlogStore((state) => state.currentBlog);
+  const fetchBlogById = useBlogStore((state) => state.fetchBlogById);
+
+  // select the comments map (stable reference) and derive per-post comments locally
+  const commentsMap = useBlogStore((state) => state.comments);
+  const comments =
+    commentsMap && commentsMap[String(id)]
+      ? commentsMap[String(id)]
+      : EMPTY_COMMENTS;
+  const addComment = useBlogStore((state) => state.addComment);
+
+  const [commentText, setCommentText] = useState("");
+  const [commentAuthor, setCommentAuthor] = useState("");
 
   useEffect(() => {
     fetchBlogById(id);
@@ -22,6 +37,10 @@ function SinglePost() {
   }
 
   const { title, author, Date, imageUrl, content } = currentBlog;
+
+  // combine persisted comments (from zustand) with any comments on the blog object (fallback)
+  const displayedComments =
+    comments && comments.length > 0 ? comments : currentBlog.comments || [];
   return (
     <main className="w-full flex-1">
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
@@ -94,63 +113,74 @@ function SinglePost() {
         <section className="mt-12">
           <h2 className="text-2xl font-bold text-gray-900">Comments</h2>
           <div className="mt-6 flex flex-col gap-6">
-            <div className="flex items-start gap-4">
-              <div
-                className="h-10 w-10 shrink-0 rounded-full bg-cover bg-center bg-no-repeat"
-                style={{
-                  backgroundImage:
-                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuByUpGe6IAcp_gYfjjf3MvSNweCs2H3NFBoWi-8C9dXY0_xyO29cuQCBrURBUdbNcT0ShCFATjv4U9dm5VNsCx2jZPy2dRMzTkSl_K8Vg7W1cwESZsnMD0lJahL-zdFpUvJH3VM-BoTu01dDs7WYxY7QoO_fK6n_CGnGjwsFUOxGPCmpza1XSFbDv-_wBc47-MhSAuu48n3z-icxAjWn9JFE9oLoUBkVGi8J9FsPFYXPnBHA3JEA_HuVBGG0naPYv2D_UL4FyXhYQlB")',
-                }}
-              ></div>
-              <div>
-                <div className="flex items-baseline gap-2">
-                  <p className="text-sm font-semibold text-gray-900 ">
-                    Mark Johnson
-                  </p>
-                  <p className="text-xs text-gray-500">July 15, 2024</p>
+            {displayedComments.length === 0 ? (
+              <p className="text-sm text-gray-500">
+                No comments yet. Be the first to comment.
+              </p>
+            ) : (
+              displayedComments.map((c) => (
+                <div
+                  key={c.id}
+                  className={`flex items-start gap-4 ${
+                    c.parentId ? "pl-14" : ""
+                  }`}
+                >
+                  <div
+                    className="h-10 w-10 shrink-0 rounded-full bg-cover bg-center bg-no-repeat"
+                    style={{
+                      backgroundImage: c.avatar
+                        ? `url("${c.avatar}")`
+                        : 'url("https://www.gravatar.com/avatar/?d=mp")',
+                    }}
+                  ></div>
+                  <div>
+                    <div className="flex items-baseline gap-2">
+                      <p className="text-sm font-semibold text-gray-900">
+                        {c.author}
+                      </p>
+                      <p className="text-xs text-gray-500">{c.date}</p>
+                    </div>
+                    <p className="mt-1 text-base text-gray-700">{c.text}</p>
+                  </div>
                 </div>
-                <p className="mt-1 text-base text-gray-700">
-                  Great article! The insights into AI-driven testing frameworks
-                  are particularly interesting.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4 pl-14">
-              <div
-                className="h-10 w-10 shrink-0 rounded-full bg-cover bg-center bg-no-repeat"
-                style={{
-                  backgroundImage:
-                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuByglaHxM_wwt8wBxrocZlCpLehRL1ksQhqETiShrjldDfBdDjXoMFc4RZqyKSIKEDIzFxIh42bXaXiLa_RvHHmcvN-t26Sq5Rl_odLk38SvAOJT7xa0wXyU58TDa_j5GGzCeWma2Ow64uWe6EvOI7HW-8uvxKkPUH-SiZzCUWUeENyzLY9IuMlb0N5lcBA9fAqdUOvVKW6qDd96Cy21O_8yz9IsyHWUJShm0nd6ADqCZwouWwkVR-rbdtUEDvMJ0wz8ORoR9Ygo15C")',
-                }}
-              ></div>
-              <div>
-                <div className="flex items-baseline gap-2">
-                  <p className="text-sm font-semibold text-gray-900">Sarah</p>
-                  <p className="text-xs text-gray-500">July 15, 2024</p>
-                </div>
-                <p className="mt-1 text-base text-gray-700">
-                  Thanks, Mark! I'm glad you found the section on AI testing
-                  useful.
-                </p>
-              </div>
-            </div>
+              ))
+            )}
           </div>
           <div className="mt-8 flex items-start gap-3">
             <div
               className="h-10 w-10 shrink-0 rounded-full bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage:
-                  'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCnkmr5a-_OU7R40FBhMfTiqIyCx0iiiZyIuMPX7shm3iDZDTVxa1pZS3Fh1riRcS2buqj2p0OwYi4EorgbnI8YP2ymLM-aaIwcIMRQAx3yh00cj4lY60kR70-ylJnl4uPT4Mq6XD6m5kNtUUZ4s9ZXgF8srKHtf98bAWKuO8taQAqX41PZ6NsKLlhIxZGFmldcvvdv6GFh1imQJZ53d-1JnsXswb5xH90Iop-GT2o1yQlh6ROxN0_B_G5pzTLBTBUBA1Viztf5E1Qn")',
+                backgroundImage: 'url("https://www.gravatar.com/avatar/?d=mp")',
               }}
             ></div>
             <div className="flex w-full flex-col @container">
+              <input
+                value={commentAuthor}
+                onChange={(e) => setCommentAuthor(e.target.value)}
+                className="mb-2 rounded-md border-gray-300 p-2 text-sm"
+                placeholder="Your name (optional)"
+              />
               <textarea
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
                 className="form-textarea w-full resize-none rounded-lg border-gray-300 bg-white p-3 text-base text-gray-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
                 placeholder="Add a comment..."
                 rows="3"
               ></textarea>
               <div className="mt-2 flex justify-end">
-                <button className="h-9 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-blue-500 px-4 text-sm font-semibold text-white shadow-sm transition-transform hover:scale-105 active:scale-95">
+                <button
+                  onClick={() => {
+                    const text = commentText.trim();
+                    if (!text) return;
+                    addComment(id, {
+                      author: commentAuthor || "Anonymous",
+                      text,
+                    });
+                    setCommentText("");
+                    setCommentAuthor("");
+                  }}
+                  className="h-9 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-blue-500 px-4 text-sm font-semibold text-white shadow-sm transition-transform hover:scale-105 active:scale-95"
+                >
                   Post Comment
                 </button>
               </div>
