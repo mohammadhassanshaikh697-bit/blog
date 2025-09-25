@@ -13,6 +13,7 @@ function BlogPostCard({ blog }) {
             to={`/post/${id}`}
           >
             <img
+              loading="lazy"
               alt="Post image"
               className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
               src={

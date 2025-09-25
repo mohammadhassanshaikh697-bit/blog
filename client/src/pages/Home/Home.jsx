@@ -56,9 +56,9 @@ function Home() {
                   solve some of the world's most complex problems.
                 </p>
                 <div className="mt-6">
-                  <a
+                  <Link
                     className="inline-flex items-center gap-2 text-sm font-medium text-blue-500 hover:underline"
-                    to={"/"}
+                    to={"/post/4"}
                   >
                     Read More
                     <svg
@@ -76,11 +76,12 @@ function Home() {
                       <path d="M5 12h14"></path>
                       <path d="m12 5 7 7-7 7"></path>
                     </svg>
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="order-1 @[640px]:order-2 aspect-w-16 aspect-h-9">
                 <img
+                  loading="lazy"
                   alt="Abstract image representing quantum computing"
                   className="w-full h-full object-cover rounded-lg"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-MP3b-3RSSqOxnrLEiobT_CXUbYlCvS7LHkQ34QHfpBQhY3Il6HEQFSQSmK7MPC24xIT2axNw-ljBuM7Drqim9FbEUDtUUXUlgtodIVUHjBN052h0HCWvrdYuaPNrq0FdWY1fKL0p5CFDUqyMi-Os-O2xbGXAlQ33ygDDPOnWhIFCukPAHOwZV34fZzYg2pzO49r92nNdjvcY9Zght4uhBrspL5AMDIHFqTw7nSLuCs1dNjQOx95HaULSYAPr2Phi9ypPWeEN-Ye3"
