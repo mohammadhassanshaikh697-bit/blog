@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import useBlogStore from "../../store/useBlogStore";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 // {title, content, author, date, imageUrl, comments}
 
 function SinglePost() {
@@ -47,9 +48,10 @@ function SinglePost() {
               backgroundImage: `url("${imageUrl}")`,
             }}
           ></div>
-          <div className="prose prose-lg max-w-none prose-indigo">
-            <ReactMarkdown children={content} />
+          <div className="prose prose-lg max-w-none markdown-container">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
           </div>
+
           <footer className="mt-6 flex items-center gap-4 border-t border-gray-200 pt-6">
             <button className="flex items-center gap-2 rounded-lg bg-blue-500/10 px-3 py-1.5 text-sm font-medium text-blue-500 hover:bg-blue-500/20 ">
               <svg
