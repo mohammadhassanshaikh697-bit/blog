@@ -1,81 +1,152 @@
 import { create } from "zustand";
+import * as postApi from "../services/postApi";
+import useAuthStore from "./useAuthStore";
 
-const useBlogStore = create((set, get) => {
-  // load persisted comments from localStorage if any
-  const persisted =
-    typeof window !== "undefined" ? localStorage.getItem("comments") : null;
-  const initialComments = persisted ? JSON.parse(persisted) : {};
+const useBlogStore = create((set, get) => ({
+  blogs: [],
+  currentBlog: null,
+  loading: false,
+  error: null,
 
-  return {
-    blogs: [],
-    currentBlog: null,
-    // comments keyed by blog id (string)
-    comments: initialComments,
-    fetchBlogs: async () => {
-      try {
-        const response = await fetch("/Blog.json");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        set({ blogs: data });
-      } catch (error) {
-        console.error("Failed to fetch blogs:", error);
-      }
-    },
-    fetchBlogById: async (id) => {
-      // Ensure all blogs are loaded first
-      if (get().blogs.length === 0) {
-        await get().fetchBlogs();
-      }
-      const blog = get().blogs.find((blog) => blog.id === parseInt(id));
-      set({ currentBlog: blog });
-    },
-    // add a new comment for a blog
-    addComment: (
-      blogId,
-      { author = "Anonymous", text = "", avatar = null, date = null }
-    ) => {
-      try {
-        const idKey = String(blogId);
-        const newComment = {
-          id: Date.now(),
-          author,
-          text,
-          avatar,
-          date: date || new Date().toLocaleString(),
-        };
-        const existing = get().comments[idKey] || [];
-        const updated = {
-          ...get().comments,
-          [idKey]: [newComment, ...existing],
-        };
-        set({ comments: updated });
-        // persist
-        if (typeof window !== "undefined") {
-          localStorage.setItem("comments", JSON.stringify(updated));
-        }
+  setLoading: (loading) => set({ loading }),
+  setError: (error) => set({ error }),
 
-        // also update currentBlog.comments if it matches
-        const cb = get().currentBlog;
-        if (cb && String(cb.id) === idKey) {
-          const updatedBlog = {
-            ...cb,
-            comments: [newComment, ...(cb.comments || [])],
+  fetchBlogs: async () => {
+    try {
+      set({ loading: true, error: null });
+      const blogs = await postApi.getAllPosts();
+      set({ blogs, loading: false });
+    } catch (error) {
+      console.error("Failed to fetch blogs:", error);
+      set({ error: error.message, loading: false });
+    }
+  },
+
+  fetchBlogById: async (id) => {
+    try {
+      set({ loading: true, error: null });
+      const blog = await postApi.getPost(id);
+      set({ currentBlog: blog, loading: false });
+    } catch (error) {
+      console.error("Failed to fetch blog:", error);
+      set({ error: error.message, loading: false });
+    }
+  },
+
+  createPost: async (postData) => {
+    try {
+      set({ loading: true, error: null });
+      const newPost = await postApi.createPost(postData);
+      set((state) => ({
+        blogs: [newPost, ...state.blogs],
+        loading: false,
+      }));
+      return newPost;
+    } catch (error) {
+      console.error("Failed to create post:", error);
+      set({ error: error.message, loading: false });
+      throw error;
+    }
+  },
+
+  updatePost: async (id, postData) => {
+    try {
+      set({ loading: true, error: null });
+      const updatedPost = await postApi.updatePost(id, postData);
+      set((state) => ({
+        blogs: state.blogs.map((blog) => (blog.id === id ? updatedPost : blog)),
+        currentBlog:
+          state.currentBlog?.id === id ? updatedPost : state.currentBlog,
+        loading: false,
+      }));
+      return updatedPost;
+    } catch (error) {
+      console.error("Failed to update post:", error);
+      set({ error: error.message, loading: false });
+      throw error;
+    }
+  },
+
+  deletePost: async (id) => {
+    try {
+      set({ loading: true, error: null });
+      await postApi.deletePost(id);
+      set((state) => ({
+        blogs: state.blogs.filter((blog) => blog.id !== id),
+        currentBlog: state.currentBlog?.id === id ? null : state.currentBlog,
+        loading: false,
+      }));
+    } catch (error) {
+      console.error("Failed to delete post:", error);
+      set({ error: error.message, loading: false });
+      throw error;
+    }
+  },
+
+  addComment: async (blogId, comment) => {
+    try {
+      set({ loading: true, error: null });
+      const newComment = await postApi.addComment(blogId, {
+        ...comment,
+        author: useAuthStore.getState().user?.displayName || "Anonymous",
+        avatar: useAuthStore.getState().user?.photoURL,
+        date: new Date().toISOString(),
+      });
+
+      set((state) => {
+        const blog = state.currentBlog;
+        if (blog && blog.id === blogId) {
+          return {
+            currentBlog: {
+              ...blog,
+              comments: [newComment, ...(blog.comments || [])],
+            },
+            loading: false,
           };
-          set({ currentBlog: updatedBlog });
         }
-        return newComment;
-      } catch (err) {
-        console.error("Failed to add comment:", err);
-        return null;
-      }
-    },
-    // helper to get comments for a blog id
-    getCommentsFor: (blogId) => {
-      return get().comments[String(blogId)] || [];
-    },
-  };
-});
+        return { loading: false };
+      });
+      return newComment;
+    } catch (error) {
+      console.error("Failed to add comment:", error);
+      set({ error: error.message, loading: false });
+      throw error;
+    }
+  },
+
+  getCommentsFor: async (blogId) => {
+    try {
+      const comments = await postApi.getComments(blogId);
+      return comments;
+    } catch (error) {
+      console.error("Failed to fetch comments:", error);
+      return [];
+    }
+  },
+
+  deleteComment: async (blogId, commentId) => {
+    try {
+      set({ loading: true, error: null });
+      await postApi.deleteComment(blogId, commentId);
+      set((state) => {
+        const blog = state.currentBlog;
+        if (blog && blog.id === blogId) {
+          return {
+            currentBlog: {
+              ...blog,
+              comments: blog.comments.filter((c) => c.id !== commentId),
+            },
+            loading: false,
+          };
+        }
+        return { loading: false };
+      });
+    } catch (error) {
+      console.error("Failed to delete comment:", error);
+      set({ error: error.message, loading: false });
+      throw error;
+    }
+  },
+}));
 
 export default useBlogStore;

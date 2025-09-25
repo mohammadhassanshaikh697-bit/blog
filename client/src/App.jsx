@@ -1,4 +1,9 @@
 import { useRoutes } from "react-router";
+import {
+  AuthProvider,
+  PrivateRoute,
+  AuthRoute,
+} from "./components/AuthProvider";
 import Layout from "./components/Layout";
 import Home from "./pages/Home/Home";
 import CreatePost from "./pages/Create-post/CreatePost";
@@ -6,6 +11,8 @@ import SinglePost from "./pages/SinglePost/SInglePost";
 import AllPostsPage from "./pages/All-posts";
 import AboutPage from "./pages/About-us/index";
 import ContactPage from "./pages/Contact";
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
 
 function Routes() {
   const element = useRoutes([
@@ -23,7 +30,11 @@ function Routes() {
         },
         {
           path: "create",
-          element: <CreatePost />,
+          element: (
+            <PrivateRoute>
+              <CreatePost />
+            </PrivateRoute>
+          ),
         },
         {
           path: "/all-posts",
@@ -37,6 +48,22 @@ function Routes() {
           path: "/contact",
           element: <ContactPage />,
         },
+        {
+          path: "/login",
+          element: (
+            <AuthRoute>
+              <Login />
+            </AuthRoute>
+          ),
+        },
+        {
+          path: "/register",
+          element: (
+            <AuthRoute>
+              <Register />
+            </AuthRoute>
+          ),
+        },
       ],
     },
   ]);
@@ -44,12 +71,10 @@ function Routes() {
 }
 
 function App() {
-  // const [toggole, setToggole] = useState();
-
   return (
-    <div>
+    <AuthProvider>
       <Routes />
-    </div>
+    </AuthProvider>
   );
 }
 
