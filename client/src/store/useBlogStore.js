@@ -1,7 +1,8 @@
 import { create } from "zustand";
 
-const useBlogStore = create((set) => ({
+const useBlogStore = create((set, get) => ({
   blogs: [],
+  currentBlog: null,
   fetchBlogs: async () => {
     try {
       const response = await fetch("/Blog.json");
@@ -13,6 +14,14 @@ const useBlogStore = create((set) => ({
     } catch (error) {
       console.error("Failed to fetch blogs:", error);
     }
+  },
+  fetchBlogById: async (id) => {
+    // Ensure all blogs are loaded first
+    if (get().blogs.length === 0) {
+      await get().fetchBlogs();
+    }
+    const blog = get().blogs.find((blog) => blog.id === parseInt(id));
+    set({ currentBlog: blog });
   },
 }));
 

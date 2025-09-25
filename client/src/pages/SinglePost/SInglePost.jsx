@@ -1,6 +1,26 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import useBlogStore from "../../store/useBlogStore";
+import ReactMarkdown from "react-markdown";
 // {title, content, author, date, imageUrl, comments}
+
 function SinglePost() {
+  const { id } = useParams();
+  const { currentBlog, fetchBlogById } = useBlogStore();
+
+  useEffect(() => {
+    fetchBlogById(id);
+  }, [id, fetchBlogById]);
+
+  if (!currentBlog) {
+    return (
+      <div className="text-center py-12">
+        <p>Loading post...</p>
+      </div>
+    );
+  }
+
+  const { title, author, Date, imageUrl, content } = currentBlog;
   return (
     <main className="w-full flex-1">
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
@@ -15,73 +35,20 @@ function SinglePost() {
               </Link>
             </div>
             <h1 className="mt-4 text-3xl font-bold leading-tight text-gray-900 sm:text-4xl">
-              The Future of AI in Software Development
+              {title ? title : "The Future of AI in Software Development"}
             </h1>
             <p className="mt-3 text-sm text-gray-500">
-              Published by Sarah on July 14, 2024
+              Published by {author || "Sarah"} on {Date || "July 14, 2024"}
             </p>
           </header>
           <div
             className="aspect-video w-full rounded-lg bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage:
-                'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDYsYtWFpks8sVFCim9HI3DfzmE9IrwTBA3jXG4kH9sIt9CBydpjWCFBvuUhTaPXiwk8ap4iEw_TieAqan0snmdrD7dIia2_vwjivvIxQ21wcbVaKA28sNrhIsynpztTAxcFRdZKbGxFQasAGZ3KC7HmiV2ut5nbi-yL79KkChrElc4566nkzMwyyiIpHqc9XGb1FSkcW5yJs1Zj_mytMCY_D_N7XwN6iEOkGkyJfaAgwzVuwsLhr_h9Xoo7JpLYmuvnRHaIYxcatR4")',
+              backgroundImage: `url("${imageUrl}")`,
             }}
           ></div>
-          <div className="prose prose-lg max-w-none text-gray-700">
-            <p className="pb-2">
-              Artificial intelligence (AI) is rapidly transforming the landscape
-              of software development, offering unprecedented opportunities to
-              enhance efficiency, automate tasks, and create more intelligent
-              applications. This article explores the current and future impact
-              of AI on software development, highlighting key trends and
-              potential challenges.
-            </p>
-            <h3 className="text-xl sm:text-2xl font-bold pb-3">
-              Current Applications of AI in Software Development
-            </h3>
-            <p className="pb-2">
-              AI is already being integrated into various aspects of software
-              development, including code generation, testing, and debugging.
-              Tools powered by AI can assist developers in writing code more
-              quickly and accurately, identify and fix bugs, and automate
-              repetitive tasks. For example, AI-powered code completion tools
-              can suggest code snippets based on context, reducing the time
-              spent on manual coding. Additionally, AI algorithms can analyze
-              code for potential vulnerabilities and performance issues,
-              improving the overall quality and security of software.
-            </p>
-            <h3 className="text-xl sm:text-2xl font-bold pb-3">
-              Future Trends in AI-Driven Software Development
-            </h3>
-            <p className="pb-2">
-              Looking ahead, AI is expected to play an even more significant
-              role in software development. One emerging trend is the use of AI
-              to generate entire applications from natural language
-              descriptions. This could democratize software development,
-              allowing individuals with limited coding experience to create
-              custom applications. Another trend is the development of
-              AI-powered testing frameworks that can automatically generate test
-              cases and identify edge cases that might be missed by human
-              testers. Furthermore, AI could be used to optimize software
-              performance in real-time, adapting to changing user needs and
-              system conditions.
-            </p>
-            <h3 className="text-xl sm:text-2xl font-bold pb-3">
-              Challenges and Considerations
-            </h3>
-            <p className="pb-2">
-              While AI offers numerous benefits, there are also challenges and
-              considerations to address. One concern is the potential for AI to
-              introduce biases into software, leading to unfair or
-              discriminatory outcomes. It is crucial to ensure that AI
-              algorithms are trained on diverse and representative datasets and
-              that their outputs are carefully evaluated for bias. Another
-              challenge is the need for developers to acquire new skills and
-              knowledge to effectively work with AI tools and techniques.
-              Continuous learning and adaptation will be essential for staying
-              ahead in this rapidly evolving field.
-            </p>
+          <div className="prose prose-lg max-w-none prose-indigo">
+            <ReactMarkdown children={content} />
           </div>
           <footer className="mt-6 flex items-center gap-4 border-t border-gray-200 pt-6">
             <button className="flex items-center gap-2 rounded-lg bg-blue-500/10 px-3 py-1.5 text-sm font-medium text-blue-500 hover:bg-blue-500/20 ">

@@ -16,9 +16,8 @@ function BlogPostCard({ blog }) {
               alt="Post image"
               className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
               src={
-                imageUrl
-                  ? imageUrl
-                  : "https://lh3.googleusercontent.com/aida-public/AB6AXuCSW3fpuQHfzZWNJ5CzRLVotfQdAFNw9QRX6pKfba9VMeTJp4SaNq6q5UAJiZc9DNDATzW4TcMEkuTQgVRDOxiBbwAVAiOIqyCOBOsmBBzw1cgKvla1Akjh4ZC24LJj3jTR8EVPq5eWsPEMM-d9HB3PRTYtRcBVnsCk-xLZyAF_IWMo3-TPxCnYUEB9anmchrry-KT-El2ZMSbeyVMcl_nM4uBrp1YOdv-n4LA20-7LPwb9LuUzDl7ukunGAt_-jEHJWw4Z--Ckk9ZN"
+                imageUrl ||
+                "https://lh3.googleusercontent.com/aida-public/AB6AXuCSW3fpuQHfzZWNJ5CzRLVotfQdAFNw9QRX6pKfba9VMeTJp4SaNq6q5UAJiZc9DNDATzW4TcMEkuTQgVRDOxiBbwAVAiOIqyCOBOsmBBzw1cgKvla1Akjh4ZC24LJj3jTR8EVPq5eWsPEMM-d9HB3PRTYtRcBVnsCk-xLZyAF_IWMo3-TPxCnYUEB9anmchrry-KT-El2ZMSbeyVMcl_nM4uBrp1YOdv-n4LA20-7LPwb9LuUzDl7ukunGAt_-jEHJWw4Z--Ckk9ZN"
               }
             />
           </Link>
@@ -26,10 +25,10 @@ function BlogPostCard({ blog }) {
         <div className="md:col-span-3">
           <div className="flex items-center space-x-2 mb-2">
             <span className="inline-block bg-blue-500/10 text-blue-500 text-xs font-medium px-2.5 py-0.5 rounded-full">
-              {tag ? tag[0] : "Lifestyle"}
+              {tag[0] || "Lifestyle"}
             </span>
             <span className="inline-block bg-slate-200 text-slate-600 text-xs font-medium px-2.5 py-0.5 rounded-full">
-              {tag ? tag[1] : "Sustainable"}
+              {tag[1] || "Sustainable"}
             </span>
           </div>
           <h3 className="text-2xl font-bold text-slate-900">
@@ -37,13 +36,12 @@ function BlogPostCard({ blog }) {
               className="hover:text-blue-500 transition-colors"
               to={`/post/${id}`}
             >
-              {title ? title : "The Future of Sustainable Living"}
+              {title || "The Future of Sustainable Living"}
             </Link>
           </h3>
           <p className="mt-2 text-slate-600">
-            {description.length > 0
-              ? description
-              : " Explore innovative approaches to sustainable living, from eco-friendly homes to renewable energy solutions. Learn how to reduce your environmental impact and create Link greener future."}
+            {description ||
+              " Explore innovative approaches to sustainable living, from eco-friendly homes to renewable energy solutions. Learn how to reduce your environmental impact and create Link greener future."}
           </p>
           <div className="mt-4">
             <Link
