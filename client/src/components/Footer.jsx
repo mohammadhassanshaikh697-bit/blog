@@ -1,5 +1,3 @@
-import React from "react";
-
 function Footer() {
   return (
     <footer className="bg-amber-50 border-t border-gray-200 dark:border-gray-800">

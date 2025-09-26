@@ -1,5 +1,3 @@
-
-
 function DashBoard() {
   return (
     <main className="flex flex-1 justify-center py-8">

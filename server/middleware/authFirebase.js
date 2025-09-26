@@ -35,7 +35,19 @@ async function firebaseAuth(req, res, next) {
   const idToken = authHeader.split("Bearer ")[1];
   try {
     const decoded = await admin.auth().verifyIdToken(idToken);
-    req.user = decoded;
+
+    // Normalize common identity fields so downstream code can rely on
+    // req.user.name and req.user.picture regardless of provider shape.
+    req.user = {
+      uid: decoded.uid,
+      email: decoded.email || null,
+      // prefer explicit name, then displayName, then email as fallback
+      name: decoded.name || decoded.displayName || decoded.email || null,
+      // some providers put avatar in 'picture' or 'photoURL'
+      picture: decoded.picture || decoded.photoURL || null,
+      // keep full decoded token for reference
+      claims: decoded,
+    };
     next();
   } catch (err) {
     console.error("Firebase token verification failed", err);

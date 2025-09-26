@@ -70,7 +70,9 @@ function AllPostsPage() {
         </div>
         <div className="space-y-12">
           {blogs &&
-            blogs.map((blog) => <BlogPostCard blog={blog} key={blog.id} />)}
+            blogs.map((blog) => (
+              <BlogPostCard blog={blog} key={blog._id || blog.id} />
+            ))}
         </div>
         <div className="mt-12 flex justify-center">
           <nav aria-label="Pagination" className="flex items-center space-x-2">

@@ -1,11 +1,13 @@
-
 import { Link } from "react-router-dom";
 
 function BlogCard({ blog }) {
-  const { title, description, Date, id } = blog;
+  const { title, description, createdAt } = blog;
+  const postId = blog._id || blog.id;
   return (
     <div className="bg-amber-50 p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col">
-      <span className="text-sm text-gray-500">{Date || "May 20, 2024"}</span>
+      <span className="text-sm text-gray-500">
+        {new Date(createdAt).toLocaleDateString()}
+      </span>
       <h3 className="text-xl font-bold mt-2 text-gray-900">
         {title || "AI in Software Development"}
       </h3>
@@ -15,7 +17,7 @@ function BlogCard({ blog }) {
       </p>
       <Link
         className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-blue-500 hover:underline"
-        to={`/post/${id}`}
+        to={`/post/${postId}`}
       >
         Read More
         <svg
@@ -23,9 +25,9 @@ function BlogCard({ blog }) {
           fill="none"
           height="16"
           stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
           viewBox="0 0 24 24"
           width="16"
           xmlns="http://www.w3.org/2000/svg"

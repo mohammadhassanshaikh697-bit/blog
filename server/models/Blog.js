@@ -5,7 +5,6 @@ const BlogSchema = new mongoose.Schema({
   description: String,
   content: String,
   author: String,
-  Date: String,
   imageUrl: String,
   tag: [String],
   createdAt: { type: Date, default: Date.now },

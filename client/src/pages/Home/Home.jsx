@@ -67,9 +67,9 @@ function Home() {
                       fill="none"
                       height="16"
                       stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       viewBox="0 0 24 24"
                       width="16"
                       xmlns="http://www.w3.org/2000/svg"
@@ -108,9 +108,9 @@ function Home() {
                 fill="none"
                 height="16"
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 viewBox="0 0 24 24"
                 width="16"
                 xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +122,9 @@ function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs &&
-              blogs.map((blog) => <BlogCard blog={blog} key={blog.id} />)}
+              blogs.map((blog) => (
+                <BlogCard blog={blog} key={blog._id || blog.id} />
+              ))}
           </div>
         </div>
       </section>

@@ -29,18 +29,19 @@ export async function deletePost(id) {
 }
 
 export async function addComment(postId, comment) {
-  return fetchWithAuth(`/api/blogs/${postId}/comments`, {
+  // Server exposes comments under /api/comments and expects blogId in the body
+  return fetchWithAuth(`/api/comments`, {
     method: "POST",
-    body: JSON.stringify(comment),
+    body: JSON.stringify({ blogId: postId, ...comment }),
   });
 }
 
 export async function getComments(postId) {
-  return fetchWithAuth(`/api/blogs/${postId}/comments`);
+  return fetchWithAuth(`/api/comments?blogId=${postId}`);
 }
 
 export async function deleteComment(postId, commentId) {
-  return fetchWithAuth(`/api/blogs/${postId}/comments/${commentId}`, {
+  return fetchWithAuth(`/api/comments/${commentId}`, {
     method: "DELETE",
   });
 }

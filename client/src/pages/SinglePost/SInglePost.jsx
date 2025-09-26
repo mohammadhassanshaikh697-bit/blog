@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 const EMPTY_COMMENTS = Object.freeze([]);
 import { Link, useParams } from "react-router-dom";
 import useBlogStore from "../../store/useBlogStore";
+import useAuthStore from "../../store/useAuthStore";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-// {title, content, author, date, imageUrl, comments}
+import Loader from "../../components/Loader";
 
 function SinglePost() {
   const { id } = useParams();
@@ -23,20 +24,24 @@ function SinglePost() {
 
   const [commentText, setCommentText] = useState("");
   const [commentAuthor, setCommentAuthor] = useState("");
+  const user = useAuthStore((s) => s.user);
 
   useEffect(() => {
     fetchBlogById(id);
   }, [id, fetchBlogById]);
 
+  // when user changes, prefill the author field with their display name/email
+  useEffect(() => {
+    if (user) {
+      setCommentAuthor(user.displayName || user.email || "");
+    }
+  }, [user]);
+
   if (!currentBlog) {
-    return (
-      <div className="text-center py-12">
-        <p>Loading post...</p>
-      </div>
-    );
+    return <Loader />;
   }
 
-  const { title, author, Date, imageUrl, content } = currentBlog;
+  const { title, author, createdAt, imageUrl, content } = currentBlog;
 
   // combine persisted comments (from zustand) with any comments on the blog object (fallback)
   const displayedComments =
@@ -49,16 +54,17 @@ function SinglePost() {
             <div className="flex items-center gap-2 text-sm text-gray-500">
               <Link
                 className="hover:text-blue-500 dark:hover:text-blue-500"
-                to={"/"}
+                to={"/all-posts"}
               >
-                Home
+                Browse All Posts
               </Link>
             </div>
             <h1 className="mt-4 text-3xl font-bold leading-tight text-gray-900 sm:text-4xl">
               {title ? title : "The Future of AI in Software Development"}
             </h1>
             <p className="mt-3 text-sm text-gray-500">
-              Published by {author || "Sarah"} on {Date || "July 14, 2024"}
+              Published by {author || "Sarah"} on{" "}
+              {new Date(createdAt).toLocaleString()}
             </p>
           </header>
           <div
@@ -138,7 +144,11 @@ function SinglePost() {
                       <p className="text-sm font-semibold text-gray-900">
                         {c.author}
                       </p>
-                      <p className="text-xs text-gray-500">{c.date}</p>
+                      <p className="text-xs text-gray-500">
+                        {c.createdAt
+                          ? new Date(c.createdAt).toLocaleString()
+                          : c.date || ""}
+                      </p>
                     </div>
                     <p className="mt-1 text-base text-gray-700">{c.text}</p>
                   </div>
@@ -150,15 +160,22 @@ function SinglePost() {
             <div
               className="h-10 w-10 shrink-0 rounded-full bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: 'url("https://www.gravatar.com/avatar/?d=mp")',
+                backgroundImage:
+                  user && user.photoURL
+                    ? `url("${user.photoURL}")`
+                    : 'url("https://www.gravatar.com/avatar/?d=mp")',
               }}
             ></div>
             <div className="flex w-full flex-col @container">
               <input
                 value={commentAuthor}
-                onChange={(e) => setCommentAuthor(e.target.value)}
+                onChange={(e) => {
+                  // allow editing name only when not logged in
+                  if (!user) setCommentAuthor(e.target.value);
+                }}
                 className="mb-2 rounded-md border-gray-300 p-2 text-sm"
-                placeholder="Your name (optional)"
+                placeholder={user ? "Signed in user" : "Your name (optional)"}
+                readOnly={!!user}
               />
               <textarea
                 value={commentText}
@@ -172,12 +189,11 @@ function SinglePost() {
                   onClick={() => {
                     const text = commentText.trim();
                     if (!text) return;
-                    addComment(id, {
-                      author: commentAuthor || "Anonymous",
-                      text,
-                    });
+                    // pass only the text; the store will attach the authenticated user's
+                    // name/avatar when available (useBlogStore.addComment)
+                    addComment(id, { text });
                     setCommentText("");
-                    setCommentAuthor("");
+                    if (!user) setCommentAuthor("");
                   }}
                   className="h-9 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-blue-500 px-4 text-sm font-semibold text-white shadow-sm transition-transform hover:scale-105 active:scale-95"
                 >

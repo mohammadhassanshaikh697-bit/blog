@@ -54,9 +54,14 @@ const useBlogStore = create((set, get) => ({
       set({ loading: true, error: null });
       const updatedPost = await postApi.updatePost(id, postData);
       set((state) => ({
-        blogs: state.blogs.map((blog) => (blog.id === id ? updatedPost : blog)),
+        blogs: state.blogs.map((blog) => {
+          const bid = blog._id || blog.id;
+          return bid === id ? updatedPost : blog;
+        }),
         currentBlog:
-          state.currentBlog?.id === id ? updatedPost : state.currentBlog,
+          (state.currentBlog?._id || state.currentBlog?.id) === id
+            ? updatedPost
+            : state.currentBlog,
         loading: false,
       }));
       return updatedPost;
@@ -72,8 +77,14 @@ const useBlogStore = create((set, get) => ({
       set({ loading: true, error: null });
       await postApi.deletePost(id);
       set((state) => ({
-        blogs: state.blogs.filter((blog) => blog.id !== id),
-        currentBlog: state.currentBlog?.id === id ? null : state.currentBlog,
+        blogs: state.blogs.filter((blog) => {
+          const bid = blog._id || blog.id;
+          return bid !== id;
+        }),
+        currentBlog:
+          (state.currentBlog?._id || state.currentBlog?.id) === id
+            ? null
+            : state.currentBlog,
         loading: false,
       }));
     } catch (error) {
@@ -90,12 +101,13 @@ const useBlogStore = create((set, get) => ({
         ...comment,
         author: useAuthStore.getState().user?.displayName || "Anonymous",
         avatar: useAuthStore.getState().user?.photoURL,
-        date: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
       });
 
       set((state) => {
         const blog = state.currentBlog;
-        if (blog && blog.id === blogId) {
+        const cbid = blog ? blog._id || blog.id : null;
+        if (blog && String(cbid) === String(blogId)) {
           return {
             currentBlog: {
               ...blog,
@@ -130,7 +142,8 @@ const useBlogStore = create((set, get) => ({
       await postApi.deleteComment(blogId, commentId);
       set((state) => {
         const blog = state.currentBlog;
-        if (blog && blog.id === blogId) {
+        const cbid = blog ? blog._id || blog.id : null;
+        if (blog && String(cbid) === String(blogId)) {
           return {
             currentBlog: {
               ...blog,

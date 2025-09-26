@@ -3,6 +3,12 @@
 
 /* @plugin "tailwindcss/typography"; */
 
+.markdown-container h1 {
+  font-size: xx-large;
+  font-weight: 700;
+  padding: 5px;
+}
+
 .markdown-container h2 {
   font-size: larger;
   font-weight: 600;
@@ -17,4 +23,6 @@
 
 .markdown-container p {
   margin-bottom: 1em;
+  line-height: 1.6;
+  font-size: 1.1em;
 }

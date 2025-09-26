@@ -2,15 +2,16 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 function BlogPostCard({ blog }) {
-  const { title, description, imageUrl, tag = [], id } = blog;
+  const { title, description, imageUrl, tag = [], createdAt } = blog;
+  const postId = blog._id || blog.id;
 
   return (
-    <div key={id} className="group">
+    <div className="group">
       <div className="grid md:grid-cols-5 gap-6 md:gap-8 items-start">
         <div className="md:col-span-2">
           <Link
             className="block aspect-w-16 aspect-h-9 rounded-lg overflow-hidden"
-            to={`/post/${id}`}
+            to={`/post/${postId}`}
           >
             <img
               loading="lazy"
@@ -35,7 +36,7 @@ function BlogPostCard({ blog }) {
           <h3 className="text-2xl font-bold text-slate-900">
             <Link
               className="hover:text-blue-500 transition-colors"
-              to={`/post/${id}`}
+              to={`/post/${postId}`}
             >
               {title || "The Future of Sustainable Living"}
             </Link>
@@ -44,10 +45,13 @@ function BlogPostCard({ blog }) {
             {description ||
               " Explore innovative approaches to sustainable living, from eco-friendly homes to renewable energy solutions. Learn how to reduce your environmental impact and create Link greener future."}
           </p>
-          <div className="mt-4">
+          <div className="mt-4 flex items-center justify-between">
+            <div className="text-sm text-slate-500">
+              {createdAt ? new Date(createdAt).toLocaleDateString() : ""}
+            </div>
             <Link
               className="inline-flex items-center text-sm font-medium text-blue-500 hover:text-blue-500/80 transition-colors"
-              to={`/post/${id}`}
+              to={`/post/${postId}`}
             >
               View Post
               <span className="material-symbols-outlined ml-1 text-base">

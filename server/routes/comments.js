@@ -33,7 +33,8 @@ router.post("/", firebaseAuth, async (req, res) => {
         ? req.user.name || req.user.email
         : author || "Anonymous",
       text,
-      avatar,
+      // prefer provided avatar, then Firebase token picture, otherwise null
+      avatar: avatar || (req.user && req.user.picture) || null,
     });
     await comment.save();
     res.status(201).json(comment);

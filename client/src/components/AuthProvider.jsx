@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
+import Loader from "./Loader";
 
 // Initialize auth state listener
 export function AuthProvider({ children }) {
@@ -19,7 +20,7 @@ export function PrivateRoute({ children }) {
   const { user, loading } = useAuthStore();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   if (!user) {
@@ -34,7 +35,7 @@ export function AuthRoute({ children }) {
   const { user, loading } = useAuthStore();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   if (user) {
