@@ -27,9 +27,11 @@ const useBlogStore = create((set, get) => ({
       set({ loading: true, error: null });
       const blog = await postApi.getPost(id);
       set({ currentBlog: blog, loading: false });
+      return blog;
     } catch (error) {
       console.error("Failed to fetch blog:", error);
       set({ error: error.message, loading: false });
+      throw error;
     }
   },
 

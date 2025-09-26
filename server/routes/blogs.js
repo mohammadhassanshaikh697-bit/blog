@@ -40,9 +40,6 @@ router.post("/", firebaseAuth, upload.single("image"), async (req, res) => {
       imageUrl = uploadResult.secure_url;
     }
 
-    // NOTE: we intentionally do not store a separate `Date` field.
-    // Use `createdAt` (stored by Mongoose) for published date handling.
-
     // normalize tags: accept array or comma-separated string
     let tags = [];
     if (Array.isArray(req.body.tag)) tags = req.body.tag;
@@ -65,7 +62,6 @@ router.post("/", firebaseAuth, upload.single("image"), async (req, res) => {
       description: req.body.description,
       content: req.body.content,
       author: req.user ? req.user.name || req.user.email : req.body.author,
-      // no Date field
       imageUrl,
       tag: tags,
       ...(createdAt ? { createdAt } : {}),
@@ -84,8 +80,8 @@ router.put("/:id", firebaseAuth, upload.single("image"), async (req, res) => {
     const blog = await Blog.findById(req.params.id);
     if (!blog) return res.status(404).json({ error: "Blog not found" });
 
-    // Check if user is the author
-    if (req.user.email !== blog.author) {
+    // Check if user is the author (compare email or display name)
+    if (req.user.email !== blog.author && req.user.name !== blog.author) {
       return res
         .status(403)
         .json({ error: "Not authorized to update this blog" });
