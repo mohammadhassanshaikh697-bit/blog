@@ -13,6 +13,7 @@ import AboutPage from "./pages/About-us/index";
 import ContactPage from "./pages/Contact";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
+import DashBoard from "./pages/Dashboard";
 
 function Routes() {
   const element = useRoutes([
@@ -33,6 +34,14 @@ function Routes() {
           element: (
             <PrivateRoute>
               <CreatePost />
+            </PrivateRoute>
+          ),
+        },
+        {
+          path: "dashboard",
+          element: (
+            <PrivateRoute>
+              <DashBoard />
             </PrivateRoute>
           ),
         },

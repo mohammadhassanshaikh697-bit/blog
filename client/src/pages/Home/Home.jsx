@@ -59,7 +59,7 @@ function Home() {
                 <div className="mt-6">
                   <Link
                     className="inline-flex items-center gap-2 text-sm font-medium text-blue-500 hover:underline"
-                    to={"/post/4"}
+                    to={"/post/68d62e54ce51c6eec9bc3608"}
                   >
                     Read More
                     <svg
