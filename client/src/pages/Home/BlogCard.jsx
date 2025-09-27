@@ -11,7 +11,7 @@ function BlogCard({ blog }) {
       <h3 className="text-xl font-bold mt-2 text-gray-900">
         {title || "AI in Software Development"}
       </h3>
-      <p className="mt-2 text-gray-600 flex-grow">
+      <p className="mt-2 text-gray-600 grow">
         {description ||
           "How artificial intelligence is changing the game for developers, from code generation to automated testing."}
       </p>

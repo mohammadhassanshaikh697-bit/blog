@@ -12,7 +12,7 @@ function Home() {
   }, [fetchBlogs]);
 
   return (
-    <main className="flex-grow">
+    <main className="grow">
       <section className="relative py-12 sm:py-24 lg:py-32">
         <div
           className="absolute inset-0 bg-cover bg-center"

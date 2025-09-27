@@ -3,7 +3,7 @@ import { MdOutlineGroup } from "react-icons/md";
 
 function ContactPage() {
   return (
-    <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+    <main className="grow container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
       <div className="grid md:grid-cols-2 gap-16">
         <div className="flex flex-col justify-center">
           <h2 className="text-4xl md:text-5xl font-bold leading-tight">
@@ -16,7 +16,7 @@ function ContactPage() {
           </p>
           <div className="mt-12 space-y-6">
             <div className="flex items-start gap-4">
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <span className="material-symbols-outlined text-blue-500 text-2xl">
                   <CiMail />
                 </span>
@@ -32,7 +32,7 @@ function ContactPage() {
               </div>
             </div>
             <div className="flex items-start gap-4">
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <span className="material-symbols-outlined text-blue-500 text-2xl">
                   <MdOutlineGroup />
                 </span>

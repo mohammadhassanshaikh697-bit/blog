@@ -1,6 +1,6 @@
 function AboutPage() {
   return (
-    <main className="flex-grow container mx-auto px-4 py-12 md:py-20">
+    <main className="grow container mx-auto px-4 py-12 md:py-20">
       <div className="max-w-4xl mx-auto">
         <section className="text-center mb-16">
           <h2 className="text-5xl md:text-7xl font-bold text-gray-900 mb-4">
@@ -34,7 +34,7 @@ function AboutPage() {
           </h3>
           <div className="space-y-16">
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <div
                   className="w-40 h-40 rounded-full bg-cover bg-center"
                   style={{
@@ -59,7 +59,7 @@ function AboutPage() {
               </div>
             </div>
             <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12">
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <div
                   className="w-40 h-40 rounded-full bg-cover bg-center"
                   style={{
