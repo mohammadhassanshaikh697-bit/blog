@@ -4,7 +4,7 @@ function BlogCard({ blog }) {
   const { title, description, createdAt } = blog;
   const postId = blog._id || blog.id;
   return (
-    <div className="bg-amber-50 p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col">
+    <div className="bg-blue-50 p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col">
       <span className="text-sm text-gray-500">
         {new Date(createdAt).toLocaleDateString()}
       </span>

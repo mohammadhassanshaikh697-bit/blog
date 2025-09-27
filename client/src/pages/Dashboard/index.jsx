@@ -3,6 +3,7 @@ import { CiSearch } from "react-icons/ci";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useBlogStore from "../../store/useBlogStore";
+import Loader from "../../components/Loader";
 
 function DashBoard() {
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ function DashBoard() {
             </div>
           </div>
         </div>
-        <div className="overflow-x-auto rounded-lg border border-gray-200/80 bg-amber-50">
+        <div className="overflow-x-auto rounded-lg border border-gray-200/80 bg-blue-50">
           <table className="w-full min-w-[640px] text-left">
             <thead className="border-b border-gray-200/80 bg-gray-50">
               <tr>
@@ -110,7 +111,7 @@ function DashBoard() {
                     colSpan="4"
                     className="px-6 py-4 text-center text-sm text-gray-600"
                   >
-                    Loading...
+                    <Loader />
                   </td>
                 </tr>
               ) : error ? (

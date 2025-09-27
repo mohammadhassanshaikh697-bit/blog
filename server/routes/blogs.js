@@ -121,7 +121,6 @@ router.put("/:id", firebaseAuth, upload.single("image"), async (req, res) => {
         content: req.body.content,
         imageUrl: imageUrl || blog.imageUrl,
         tag: tagsUpdate || blog.tag,
-        // no Date field; createdAt can be updated via createdAtUpdate above
         ...(createdAtUpdate ? { createdAt: createdAtUpdate } : {}),
       },
       { new: true }
@@ -141,7 +140,7 @@ router.delete("/:id", firebaseAuth, async (req, res) => {
     if (!blog) return res.status(404).json({ error: "Blog not found" });
 
     // Check if user is the author
-    if (req.user.email !== blog.author) {
+    if (req.user.email !== blog.author && req.user.name !== blog.author) {
       return res
         .status(403)
         .json({ error: "Not authorized to delete this blog" });

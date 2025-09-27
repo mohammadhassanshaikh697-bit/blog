@@ -31,7 +31,7 @@ function AllPostsPage() {
               </span>
             </span>
             <input
-              className="w-full pl-10 pr-4 py-3 text-lg bg-amber-50 border border-slate-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              className="w-full pl-10 pr-4 py-3 text-lg bg-blue-50 border border-slate-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               placeholder="Search posts..."
               type="search"
             />
@@ -39,7 +39,7 @@ function AllPostsPage() {
         </div>
         <div className="flex flex-col md:flex-row items-center justify-end space-y-4 md:space-y-0 md:space-x-2 mb-8">
           <div className="relative">
-            <select className="pl-3 pr-8 py-2 text-sm font-medium text-slate-600  bg-amber-50 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none">
+            <select className="pl-3 pr-8 py-2 text-sm font-medium text-slate-600  bg-blue-50 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none">
               <option>Category</option>
               <option>Lifestyle</option>
               <option>Technology</option>
@@ -53,7 +53,7 @@ function AllPostsPage() {
             </div>
           </div>
           <div className="relative">
-            <select className="pl-3 pr-8 py-2 text-sm font-medium text-slate-600 bg-amber-50 border border-slate-300  rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none">
+            <select className="pl-3 pr-8 py-2 text-sm font-medium text-slate-600 bg-blue-50 border border-slate-300  rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none">
               <option>Tag</option>
               <option>Sustainable</option>
               <option>Photography</option>

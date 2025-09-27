@@ -20,7 +20,11 @@ export function PrivateRoute({ children }) {
   const { user, loading } = useAuthStore();
 
   if (loading) {
-    return <Loader />;
+    return (
+      <div className="flex item-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   if (!user) {
@@ -35,7 +39,11 @@ export function AuthRoute({ children }) {
   const { user, loading } = useAuthStore();
 
   if (loading) {
-    return <Loader />;
+    return (
+      <div className="flex item-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   if (user) {

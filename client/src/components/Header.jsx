@@ -72,6 +72,14 @@ function Header() {
             >
               Contact
             </Link>
+            {user && (
+              <Link
+                className="text-sm font-medium hover:text-blue-500"
+                to="/dashboard"
+              >
+                Dashboard
+              </Link>
+            )}
           </nav>
 
           {/* Mobile menu button */}
@@ -118,6 +126,13 @@ function Header() {
                     <div className="px-4 py-2 text-sm text-gray-700 border-b">
                       {user.displayName || user.email}
                     </div>
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setMenuOpen(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Dashboard
+                    </Link>
                     <nav className="flex flex-col px-2 py-2 gap-1 md:hidden">
                       <Link
                         className="text-sm font-medium text-gray-700 hover:text-blue-500"
@@ -181,6 +196,15 @@ function Header() {
             >
               Contact
             </Link>
+            {user && (
+              <Link
+                to="/dashboard"
+                className="text-sm font-medium hover:text-blue-500"
+                onClick={() => setMobileOpen(false)}
+              >
+                Dashboard
+              </Link>
+            )}
             {user ? (
               <Link
                 to="/create"

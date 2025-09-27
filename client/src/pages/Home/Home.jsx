@@ -46,7 +46,7 @@ function Home() {
             Featured Post
           </h2>
           <div className="@container">
-            <div className="grid grid-cols-1 @[640px]:grid-cols-2 gap-8 items-center bg-amber-50 p-8 rounded-xl shadow-lg overflow-hidden">
+            <div className="grid grid-cols-1 @[640px]:grid-cols-2 gap-8 items-center bg-blue-50 p-8 rounded-xl shadow-lg overflow-hidden">
               <div className="order-2 @[640px]:order-1">
                 <h3 className="text-2xl font-bold text-gray-900">
                   The Rise of Quantum Computing

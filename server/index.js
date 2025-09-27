@@ -6,7 +6,7 @@ const path = require("path");
 
 const blogsRouter = require("./routes/blogs");
 const commentsRouter = require("./routes/comments");
-const { firebaseAuth } = require("./middleware/authFirebase");
+// const { firebaseAuth } = require("./middleware/authFirebase");
 
 const app = express();
 
@@ -15,7 +15,9 @@ const PORT = process.env.PORT || 5000;
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: process.env.FRONTEND_ORIGIN || true }));
+app.use(
+  cors({ origin: process.env.FRONTEND_ORIGIN || "http://localhost:5173" })
+);
 
 // routes
 app.use("/api/blogs", blogsRouter);

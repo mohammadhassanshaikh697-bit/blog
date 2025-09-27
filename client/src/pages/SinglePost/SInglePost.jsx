@@ -38,7 +38,11 @@ function SinglePost() {
   }, [user]);
 
   if (!currentBlog) {
-    return <Loader />;
+    return (
+      <div className="flex item-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   const { title, author, createdAt, imageUrl, content } = currentBlog;
