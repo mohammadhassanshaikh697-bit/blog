@@ -18,7 +18,7 @@ function Home() {
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage:
-              "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDLRTQEUbOREEw_SPKNBaTjJyLYEEK6UyXpb342CvH56f6v_2w40quQ7krQae5BvAfeWX_F_oL4Ucv-d3zbTQaRNan8AK-mO_OKHdNAOPoO8_6uLrWLEMLFaHHj36qNZ9fQntgQbRVOskkeAhQLnKtupKKKL1doixw2WH-uXRhDz1BsTIbf-cqCcEOeqmparj1D2ByppR6P3tg60-B00ABzXyJXc5nP3OxLGidhXsVHEu-7CwqOYl5r2Mo25FLtMqVQE-3q4SzVOynD')",
+              "url('https://images.unsplash.com/photo-1506765515384-028b60a970df?auto=format&fit=crop&w=1600&q=60')",
           }}
         ></div>
         <div className="absolute inset-0 bg-black/50"></div>
@@ -85,7 +85,7 @@ function Home() {
                   loading="lazy"
                   alt="Abstract image representing quantum computing"
                   className="w-full h-full object-cover rounded-lg"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-MP3b-3RSSqOxnrLEiobT_CXUbYlCvS7LHkQ34QHfpBQhY3Il6HEQFSQSmK7MPC24xIT2axNw-ljBuM7Drqim9FbEUDtUUXUlgtodIVUHjBN052h0HCWvrdYuaPNrq0FdWY1fKL0p5CFDUqyMi-Os-O2xbGXAlQ33ygDDPOnWhIFCukPAHOwZV34fZzYg2pzO49r92nNdjvcY9Zght4uhBrspL5AMDIHFqTw7nSLuCs1dNjQOx95HaULSYAPr2Phi9ypPWeEN-Ye3"
+                  src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=60"
                 />
               </div>
             </div>

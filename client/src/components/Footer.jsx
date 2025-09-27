@@ -185,9 +185,32 @@ function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-gray-200/80 dark:border-gray-700/50">
-          <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-            © {new Date().getFullYear()} Bloggr. All rights reserved.
-          </p>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-2">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Photos: Unsplash —
+              <a
+                href="https://unsplash.com/photos/photo-1506765515384-028b60a970df"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-1 underline"
+              >
+                Hero image
+              </a>
+              ,
+              <a
+                href="https://unsplash.com/photos/photo-1518770660439-4636190af475"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-1 underline"
+              >
+                Featured image
+              </a>
+            </p>
+
+            <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+              © {new Date().getFullYear()} Bloggr. All rights reserved.
+            </p>
+          </div>
         </div>
       </div>
     </footer>
