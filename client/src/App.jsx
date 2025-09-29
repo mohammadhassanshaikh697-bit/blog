@@ -15,6 +15,7 @@ import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import DashBoard from "./pages/Dashboard";
 import EditPost from "./pages/Edit-post/EditPost";
+import Profile from "./pages/Profile/Profile";
 
 function Routes() {
   const element = useRoutes([
@@ -43,6 +44,14 @@ function Routes() {
           element: (
             <PrivateRoute>
               <EditPost />
+            </PrivateRoute>
+          ),
+        },
+        {
+          path: "profile",
+          element: (
+            <PrivateRoute>
+              <Profile />
             </PrivateRoute>
           ),
         },

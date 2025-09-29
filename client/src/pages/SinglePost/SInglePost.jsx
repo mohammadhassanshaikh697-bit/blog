@@ -21,6 +21,7 @@ function SinglePost() {
       ? commentsMap[String(id)]
       : EMPTY_COMMENTS;
   const addComment = useBlogStore((state) => state.addComment);
+  const deleteComment = useBlogStore((state) => state.deleteComment);
 
   const [commentText, setCommentText] = useState("");
   const [commentAuthor, setCommentAuthor] = useState("");
@@ -155,6 +156,14 @@ function SinglePost() {
                       </p>
                     </div>
                     <p className="mt-1 text-base text-gray-700">{c.text}</p>
+                    {(user?.email === c.author || user?.email === author) && (
+                      <button
+                        onClick={() => deleteComment(id, c._id)}
+                        className="text-xs text-red-500 hover:underline"
+                      >
+                        Delete
+                      </button>
+                    )}
                   </div>
                 </div>
               ))

@@ -61,7 +61,7 @@ function ContactPage() {
                 Your Name
               </label>
               <input
-                className="form-input w-full bg-blue-50 border-black/20 dark:border-white/20 rounded-lg py-3 px-4 focus:border-blue-500 focus:ring-blue-500"
+                className="form-input w-full bg-blue-50border-black/20 dark:border-white/20 rounded-lg py-3 px-4 focus:border-blue-500 focus:ring-blue-500"
                 id="name"
                 name="name"
                 placeholder="Your Name"
@@ -73,7 +73,7 @@ function ContactPage() {
                 Your Email
               </label>
               <input
-                className="form-input w-full bg-blue-50 border-black/20 dark:border-white/20 rounded-lg py-3 px-4 focus:border-blue-500 focus:ring-blue-500"
+                className="form-input w-full bg-blue-50border-black/20 dark:border-white/20 rounded-lg py-3 px-4 focus:border-blue-500 focus:ring-blue-500"
                 id="email"
                 name="email"
                 placeholder="Your Email"
@@ -85,7 +85,7 @@ function ContactPage() {
                 Subject
               </label>
               <input
-                className="form-input w-full bg-blue-50 border-black/20 dark:border-white/20 rounded-lg py-3 px-4 focus:border-blue-500 focus:ring-blue-500"
+                className="form-input w-full bg-blue-50border-black/20 dark:border-white/20 rounded-lg py-3 px-4 focus:border-blue-500 focus:ring-blue-500"
                 id="subject"
                 name="subject"
                 placeholder="Subject"
@@ -97,7 +97,7 @@ function ContactPage() {
                 Your Message
               </label>
               <textarea
-                className="form-input w-full bg-blue-50 border-black/20 dark:border-white/20 rounded-lg py-3 px-4 focus:border-blue-500 focus:ring-blue-500"
+                className="form-input w-full bg-blue-50border-black/20 dark:border-white/20 rounded-lg py-3 px-4 focus:border-blue-500 focus:ring-blue-500"
                 id="message"
                 name="message"
                 placeholder="Your Message"

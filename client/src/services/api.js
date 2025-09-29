@@ -1,6 +1,6 @@
 import { getAuth } from "firebase/auth";
 
-const API_BASE_URL = "http://localhost:5000"; // Update this with your backend URL
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000"; // Update this with your backend URL
 
 export async function fetchWithAuth(endpoint, options = {}) {
   const auth = getAuth();

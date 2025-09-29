@@ -7,6 +7,7 @@ const BlogSchema = new mongoose.Schema({
   author: String,
   imageUrl: String,
   tag: [String],
+  status: { type: String, enum: ["draft", "published"], default: "published" },
   createdAt: { type: Date, default: Date.now },
 });
 

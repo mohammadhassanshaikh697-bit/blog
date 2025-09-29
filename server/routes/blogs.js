@@ -7,13 +7,30 @@ const { firebaseAuth } = require("../middleware/authFirebase");
 
 const upload = multer({ dest: "/tmp/uploads" });
 
-// GET /api/blogs - list
+// GET /api/blogs - list all PUBLISHED blogs for public view
 router.get("/", async (req, res) => {
   try {
-    const blogs = await Blog.find().sort({ createdAt: -1 }).lean();
+    const blogs = await Blog.find({ status: "published" })
+      .sort({ createdAt: -1 })
+      .lean();
     res.json(blogs);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch blogs" });
+  }
+});
+
+// GET /api/blogs/my-posts - list all posts for the logged in user (drafts and published)
+router.get("/my-posts", firebaseAuth, async (req, res) => {
+  try {
+    const blogs = await Blog.find({
+      author: { $in: [req.user.name, req.user.email] },
+    })
+      .sort({ createdAt: -1 })
+      .lean();
+    res.json(blogs);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch user blogs" });
   }
 });
 
@@ -64,6 +81,7 @@ router.post("/", firebaseAuth, upload.single("image"), async (req, res) => {
       author: req.user ? req.user.name || req.user.email : req.body.author,
       imageUrl,
       tag: tags,
+      status: req.body.status || "published",
       ...(createdAt ? { createdAt } : {}),
     });
     await blog.save();
@@ -121,6 +139,7 @@ router.put("/:id", firebaseAuth, upload.single("image"), async (req, res) => {
         content: req.body.content,
         imageUrl: imageUrl || blog.imageUrl,
         tag: tagsUpdate || blog.tag,
+        status: req.body.status || blog.status,
         ...(createdAtUpdate ? { createdAt: createdAtUpdate } : {}),
       },
       { new: true }

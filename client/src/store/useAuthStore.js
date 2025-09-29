@@ -7,6 +7,7 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
+  updateProfile as firebaseUpdateProfile,
 } from "firebase/auth";
 
 const useAuthStore = create((set) => ({
@@ -109,6 +110,31 @@ const useAuthStore = create((set) => ({
         },
         loading: false,
       });
+    } catch (error) {
+      set({ error: error.message, loading: false });
+      throw error;
+    }
+  },
+
+  // Update Profile
+  updateProfile: async (profileData) => {
+    try {
+      set({ loading: true, error: null });
+      const user = auth.currentUser;
+      if (user) {
+        await firebaseUpdateProfile(user, profileData);
+        const token = await user.getIdToken(true); // Force refresh token
+        set({
+          user: {
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            token,
+          },
+          loading: false,
+        });
+      }
     } catch (error) {
       set({ error: error.message, loading: false });
       throw error;

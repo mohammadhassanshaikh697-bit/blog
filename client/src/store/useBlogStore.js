@@ -22,6 +22,17 @@ const useBlogStore = create((set, get) => ({
     }
   },
 
+  fetchMyBlogs: async () => {
+    try {
+      set({ loading: true, error: null });
+      const blogs = await postApi.getMyPosts();
+      set({ blogs, loading: false });
+    } catch (error) {
+      console.error("Failed to fetch user blogs:", error);
+      set({ error: error.message, loading: false });
+    }
+  },
+
   fetchBlogById: async (id) => {
     try {
       set({ loading: true, error: null });

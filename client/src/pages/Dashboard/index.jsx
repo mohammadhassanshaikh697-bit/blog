@@ -7,16 +7,23 @@ import Loader from "../../components/Loader";
 
 function DashBoard() {
   const navigate = useNavigate();
-  const { blogs, loading, error, fetchBlogs, deletePost } = useBlogStore();
+  const { blogs, loading, error, fetchMyBlogs, deletePost } = useBlogStore();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("date-desc");
+  const [activeTab, setActiveTab] = useState("published");
 
   useEffect(() => {
-    fetchBlogs();
-  }, [fetchBlogs]);
+    fetchMyBlogs();
+  }, [fetchMyBlogs]);
+
+  const publishedBlogs = blogs.filter((blog) => blog.status === "published");
+  const draftBlogs = blogs.filter((blog) => blog.status === "draft");
+
+  const blogsToDisplay =
+    activeTab === "published" ? publishedBlogs : draftBlogs;
 
   // Filter and sort blogs
-  const filteredAndSortedBlogs = [...(blogs || [])]
+  const filteredAndSortedBlogs = [...(blogsToDisplay || [])]
     .filter(
       (blog) =>
         blog.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -55,7 +62,7 @@ function DashBoard() {
     <main className="flex flex-1 justify-center py-8">
       <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <h1 className="text-3xl sm:text-4xl font-bold">All Posts</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold">Dashboard</h1>
           <div className="flex flex-col sm:flex-row items-stretch gap-2 sm:gap-4">
             <div className="relative w-full sm:max-w-xs">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -85,6 +92,30 @@ function DashBoard() {
               </span>
             </div>
           </div>
+        </div>
+        <div className="mb-4 border-b border-gray-200">
+          <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+            <button
+              onClick={() => setActiveTab("published")}
+              className={`${
+                activeTab === "published"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            >
+              Published
+            </button>
+            <button
+              onClick={() => setActiveTab("drafts")}
+              className={`${
+                activeTab === "drafts"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            >
+              Drafts
+            </button>
+          </nav>
         </div>
         <div className="overflow-x-auto rounded-lg border border-gray-200/80 bg-blue-50">
           <table className="w-full min-w-[640px] text-left">

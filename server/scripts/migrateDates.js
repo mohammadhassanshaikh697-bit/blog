@@ -9,10 +9,7 @@ async function run() {
     process.exit(1);
   }
 
-  await mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  await mongoose.connect(uri);
   console.log("Connected to MongoDB for Date migration");
 
   // find docs that have a `Date` field set (legacy) and migrate into createdAt

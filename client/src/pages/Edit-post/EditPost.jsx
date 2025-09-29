@@ -18,6 +18,7 @@ function EditPost() {
   const [formError, setFormError] = useState("");
   const [imagePreview, setImagePreview] = useState("");
   const [tags, setTags] = useState([]);
+  const [status, setStatus] = useState("published");
 
   // Example tag options (customize as needed)
   const tagOptions = [
@@ -45,6 +46,7 @@ function EditPost() {
           setImageUrl(post.imageUrl || "");
           setImagePreview(post.imageUrl || "");
           setTags(post.tag || []);
+          setStatus(post.status || "published");
         }
       } catch (err) {
         setFormError("Failed to load post");
@@ -55,7 +57,7 @@ function EditPost() {
     loadPost();
   }, [id, fetchBlogById]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, newStatus) => {
     e.preventDefault();
     setFormError("");
 
@@ -89,6 +91,7 @@ function EditPost() {
             .substring(0, 200) + "...", // First 200 characters as description
         author: user.displayName || user.email,
         tag: tags,
+        status: newStatus,
       };
 
       await updatePost(id, postData);
@@ -118,7 +121,6 @@ function EditPost() {
             )}
             <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-2">
-                {/* Tag selection refined UI */}
                 <label className="text-sm font-medium" htmlFor="tags">
                   Tags
                 </label>
@@ -264,9 +266,20 @@ function EditPost() {
                   required
                 ></textarea>
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={(e) => handleSubmit(e, "draft")}
+                  disabled={loading}
+                  className={`w-full sm:w-auto rounded bg-gray-200 px-6 py-2.5 text-sm font-bold text-gray-700 shadow-sm hover:bg-gray-300 ${
+                    loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  {loading ? "Saving..." : "Save Draft"}
+                </button>
                 <button
                   type="submit"
+                  onClick={(e) => handleSubmit(e, "published")}
                   disabled={loading}
                   className={`w-full sm:w-auto rounded bg-blue-500 px-6 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-blue-500/90 ${
                     loading ? "opacity-50 cursor-not-allowed" : ""

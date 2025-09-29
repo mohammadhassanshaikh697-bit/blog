@@ -133,29 +133,14 @@ function Header() {
                     >
                       Dashboard
                     </Link>
-                    <nav className="flex flex-col px-2 py-2 gap-1 md:hidden">
-                      <Link
-                        className="text-sm font-medium text-gray-700 hover:text-blue-500"
-                        to="/"
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        Home
-                      </Link>
-                      <Link
-                        className="text-sm font-medium text-gray-700 hover:text-blue-500"
-                        to="/about"
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        About
-                      </Link>
-                      <Link
-                        className="text-sm font-medium text-gray-700 hover:text-blue-500"
-                        to="/contact"
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        Contact
-                      </Link>
-                    </nav>
+                    <Link
+                      to="/profile"
+                      onClick={() => setMenuOpen(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Profile
+                    </Link>
+
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50"

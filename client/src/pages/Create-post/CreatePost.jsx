@@ -34,7 +34,8 @@ function CreatePost() {
   // Only show options not already selected
   const availableTagOptions = tagOptions.filter((tag) => !tags.includes(tag));
 
-  const handleSubmit = async (e) => {
+  //  status = "published";
+  const handleSubmit = async (e, status = "published") => {
     e.preventDefault();
     setFormError("");
 
@@ -69,6 +70,7 @@ function CreatePost() {
         author: user.displayName || user.email,
         createdAt: new Date().toISOString(),
         tag: tags,
+        status: status,
       };
 
       await createPost(postData);
@@ -244,9 +246,20 @@ function CreatePost() {
                   required
                 ></textarea>
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={(e) => handleSubmit(e, "draft")}
+                  disabled={loading}
+                  className={`w-full sm:w-auto rounded bg-gray-200 px-6 py-2.5 text-sm font-bold text-gray-700 shadow-sm hover:bg-gray-300 ${
+                    loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  {loading ? "Saving..." : "Save Draft"}
+                </button>
                 <button
                   type="submit"
+                  onClick={(e) => handleSubmit(e, "published")}
                   disabled={loading}
                   className={`w-full sm:w-auto rounded bg-blue-500 px-6 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-blue-500/90 ${
                     loading ? "opacity-50 cursor-not-allowed" : ""

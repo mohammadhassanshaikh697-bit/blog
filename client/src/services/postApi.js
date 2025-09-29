@@ -1,7 +1,13 @@
 import { fetchWithAuth } from "./api";
 
 export async function getAllPosts() {
+  // This fetches only PUBLISHED posts for public pages
   return fetchWithAuth("/api/blogs");
+}
+
+export async function getMyPosts() {
+  // This fetches ALL posts (published and drafts) for the logged-in user
+  return fetchWithAuth("/api/blogs/my-posts");
 }
 
 export async function getPost(id) {
