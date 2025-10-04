@@ -51,9 +51,12 @@ router.delete("/:id", firebaseAuth, async (req, res) => {
     if (!comment) return res.status(404).json({ error: "Comment not found" });
 
     // Check if user is the comment author or the blog author
-    if (req.user.email !== comment.author) {
+    if (req.user.email !== comment.author && req.user.name !== comment.author) {
       const blog = await Blog.findById(comment.blogId);
-      if (!blog || req.user.email !== blog.author) {
+      if (
+        !blog ||
+        (req.user.email !== blog.author && req.user.name !== blog.author)
+      ) {
         return res
           .status(403)
           .json({ error: "Not authorized to delete this comment" });
