@@ -10,7 +10,7 @@
     "migrate:status": "node scripts/migrateStatus.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Mohammad Hassan",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {

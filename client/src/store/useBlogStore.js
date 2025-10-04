@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import * as postApi from "../services/postApi";
 import useAuthStore from "./useAuthStore";
+import avater from "../assets/avater.png";
+// import { avater } from "..";
 
 const useBlogStore = create((set, get) => ({
   blogs: [],
@@ -113,7 +115,7 @@ const useBlogStore = create((set, get) => ({
       const newComment = await postApi.addComment(blogId, {
         ...comment,
         author: useAuthStore.getState().user?.displayName || "Anonymous",
-        avatar: useAuthStore.getState().user?.photoURL,
+        avatar: useAuthStore.getState().user?.photoURL || avater,
         createdAt: new Date().toISOString(),
       });
 
